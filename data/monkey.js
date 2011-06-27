@@ -4,6 +4,8 @@ let $ = document.getElementById
 let C = document.createElement;
 let J = JSON.stringify;
 
+var currentID = -1;
+
 function Dashboard() {
   let me = this;
   me.fluidLists = {
@@ -57,7 +59,9 @@ Dashboard.prototype.handleSubmit = function(e) {
   params['timeRange'] = timeRange;
   params['query'] = $('search-field').value;
   reportError(J(params));
+  currentID = Math.floor(Math.random() * 16000);
   self.postMessage({
+    "random" : currentID,
     "action" : "search",
     "params" : params,
   });
@@ -219,14 +223,12 @@ var dash = new Dashboard();
 
 self.on("message", function(data) {
   if (data.action == "display") {
-    dash.populate(data.results);
+    if (data.random == currentID) {
+      dash.populate(data.results);
+    }
   } else {
 
   }
   console.log("got message from chrome");
-});
-
-self.postMessage({
-  "search": "",
 });
 
