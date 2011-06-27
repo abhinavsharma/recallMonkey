@@ -1,0 +1,137 @@
+<!--
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Recall Monkey.
+ *
+ * The Initial Developer of the Original Code is The Mozilla Foundation.
+ * Portions created by the Initial Developer are Copyright (C) 2011
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Abhinav Sharma <me@abhinavsharma.me>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+-->
+
+
+
+<html>
+<head>
+  <title>Recall Monkey</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/reset.css" />
+</head>
+<body onload="document.searchform.searchfield.focus();">
+
+  <div id="version-error">
+
+  </div>
+  <!--
+  <div id="version-home">
+    <div id="home-wrap">
+      <div class="main-title">RecallMonkey</div>
+      <div class="search-container">
+      <form class="searchform">
+        <input type="text" onblur="" onfocus="if (this.value == 'Search...') {this.value = '';}" value="Search..." class="searchfield">
+          <input type="button" value="Go" class="searchbutton">
+          </form>
+      </div>
+    </div>
+  </div>
+  -->
+  
+  
+  <div id="version-search">
+    <!--
+    <form class="searchform" id="search-form" name="searchform">
+      <input id="search-field" type="text" onblur="" onfocus="if (this.value == 'Search...') {this.value = '';}" value="Search..." class="searchfield" name="searchfield">
+      <input type="submit" value="Go" class="searchbutton">
+    </form>
+  -->
+    
+    <form id="search-form" name="searchform">
+      <img id="monkey-image" height="80" src="img/prospector.png">
+      <input id="search-field" name="searchfield" type="text" size="40" placeholder="Search..." />
+    </form>
+    
+    <div id="search-not-form">
+      <div class="sidebar">  
+        <div class="sidebar-item">
+        <h1>Time Range</h1>
+        <form id="time-form">
+        <input type="radio" name="timerange" value="1"/>Last 24 Hours<br />
+        <input type="radio" name="timerange" value="7"/>Last Week<br />
+        <input type="radio" name="timerange" value="31"/>Last Month<br />
+        <input type="radio" name="timerange" value="366"/>Last Year<br />
+        <input type="radio" name="timerange" value="0" checked/>All Time<br /><br />
+        </form>
+        <!--
+        <input type="text" id="start-date" size="15"/><br />
+        <input type="hidden" id="startDate" />
+        <input type="text" id="end-date" size="15"/><br />
+        <input type="hidden" id="endDate" />
+        <a id="clear-time" href="#" class="location">clear</a>
+        -->
+        
+        </div>
+        
+        <!--
+        <div class="sidebar-item">
+        <h1>Search In</h1>
+        <form id="indices-form">
+        <input type="checkbox" name="timerange" value="1"/>Title<br />
+        <input type="checkbox" name="timerange" value="7"/>URL<br />
+        <input type="checkbox" name="timerange" value="31"/>Links Text<br />
+        <input type="checkbox" name="timerange" value="366"/>Bookmark Tags<br />
+        </form>
+        </div>
+        -->
+        
+        <div class="sidebar-item">
+        <h1>Prioritized Sites</h1>
+        <ul id="prioritized-list"></ul>
+        </div>
+        
+        <div class="sidebar-item">
+        <h1>Excluded Sites</h1>
+        <ul id="excluded-list"></ul>
+        </div>
+      </div>
+    
+      <div class="results">
+        <ul id="result-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  window.addEventListener("message", function(e) {
+    dump("received message");
+  }, false);
+  dump("added event listener");
+</script>
+</html>
