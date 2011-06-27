@@ -2,8 +2,8 @@
     "name": "recallmonkey",
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
     "author": "",
-    "version": "0.1",
-    "fullName": "test",
-    "id": "recallmonkey.labs.mozilla",
+    "version": "13",
+    "fullName": "Recall Monkey",
+    "id": "recallmonkey@prospector.labs.mozilla",
     "description": "a basic add-on"
 }
