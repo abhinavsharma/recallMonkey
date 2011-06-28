@@ -177,6 +177,7 @@ Dashboard.prototype.populate = function(results, append) {
     let minus = C('a');
 
     function handlePlusClick(e) {
+      console.log("handling plus click");
       me.handlePlusClick(e);
     }
 
@@ -202,14 +203,13 @@ Dashboard.prototype.populate = function(results, append) {
     let upLink = C('div');
     let upArrow = C('img');
     upArrow.setAttribute('src', (me.fluidLists["prioritized"].indexOf(revHost) < 0 ? 'img/up.png' : 'img/up2.png'));
-    upArrow.setAttribute('value', host);
+    upArrow.setAttribute('value', revHost);
     upArrow.setAttribute('class', 'arrow up');
     upLink.appendChild(upArrow);
     upArrow.addEventListener("click", handlePlusClick, false);
     let imageSpacer1 = C('br');
     let downLink = C('div');
-    let downArrow = C('img');
-    downArrow.setAttribute('src', 'img/down.png');
+    let downArrow = C('label');
     downArrow.setAttribute('value', host);
     downArrow.setAttribute('class', 'arrow down')
     downLink.appendChild(downArrow);
@@ -242,7 +242,7 @@ Dashboard.prototype.populate = function(results, append) {
     */
     el.appendChild(blank1);
     if (tags.length > 0) {
-      tagList.innerHTML = "Tags: " + J(tags);
+      tagList.innerHTML = "Tags: " + tags.join(', ');
       tagList.setAttribute('class', 'location');
       el.appendChild(tagList)
     }
@@ -266,7 +266,7 @@ Dashboard.prototype.populate = function(results, append) {
 Dashboard.prototype.handlePlusClick = function(e) {
   let me = this;
   e.preventDefault();
-  let revHost = ("." + e.target.getAttribute('value')).split('').reverse().join('');
+  let revHost = e.target.getAttribute('value');
   me.addPinned(revHost, "prioritized");
 }
 
