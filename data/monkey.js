@@ -12,9 +12,11 @@ function Dashboard() {
     "prioritized" : [],
     "excluded" : [],
   }
+  me.skipped = 0;
 
   function handleSubmit (e) {
     reportError("handling submission 1/2");
+    me.skipped = 0;
     e.preventDefault();
     me.handleSubmit(e);
   }
@@ -22,14 +24,29 @@ function Dashboard() {
   function handleChangeSubmit(e) {
     me.handleSubmit(e);
   }
+  
+  me.maxScrolled = 0;
+  function handleScroll(e) {
+    if (window.scrollY == window.scrollMaxY) {
+      me.incrementScroll();
+    }
+  }
 
   $('search-form').addEventListener("submit", handleSubmit, false);
   $('search-form').addEventListener("keyup", handleSubmit, false);
   $('time-form').addEventListener("click", handleChangeSubmit, false);
-
+  $('prioritize-bookmarks').addEventListener("click", handleChangeSubmit, false);
+  window.addEventListener("scroll", handleScroll, false);
 }
 
-Dashboard.prototype.handleSubmit = function(e) {
+Dashboard.prototype.incrementScroll = function() {
+  let me = this;
+  console.log("increment scroll");
+  me.skipped += 50;
+  me.handleSubmit(me.e, true)
+}
+
+Dashboard.prototype.handleSubmit = function(e, append) {
   try {
   let me = this;
   if (e) {
@@ -42,7 +59,8 @@ Dashboard.prototype.handleSubmit = function(e) {
     "preferredHosts": me.fluidLists["prioritized"],
     "excludedHosts": me.fluidLists["excluded"],
     "limit": 50,
-    "skip": 0,
+    "skip": me.skipped,
+    "prioritizeBookmarks" : $('prioritize-bookmarks').checked,
   };
 
   let timeRange = 0;
@@ -64,6 +82,7 @@ Dashboard.prototype.handleSubmit = function(e) {
     "random" : currentID,
     "action" : "search",
     "params" : params,
+    "append" : append ? true : false,
   });
   } catch (ex) {console.log(ex) }
 }
@@ -136,9 +155,10 @@ Dashboard.prototype.handleUnpinClick = function(e) {
 
 
 
-Dashboard.prototype.populate = function(results) {
+Dashboard.prototype.populate = function(results, append) {
   let me = this;
-  $('result-list').innerHTML = "";
+  if (!append)
+    $('result-list').innerHTML = "";
   results.forEach(function ({title, url, revHost, isBookmarked, faviconData}) {
     let li = C('li');
     let el = C('div');
@@ -173,30 +193,57 @@ Dashboard.prototype.populate = function(results) {
     minus.setAttribute('value', host);
     minus.addEventListener("click", handleMinusClick, false);
     
+    let upLink = C('div');
+    let upArrow = C('img');
+    upArrow.setAttribute('src', (me.fluidLists["prioritized"].indexOf(revHost) < 0 ? 'img/up.png' : 'img/up2.png'));
+    upArrow.setAttribute('value', host);
+    upArrow.setAttribute('class', 'arrow up');
+    upLink.appendChild(upArrow);
+    upArrow.addEventListener("click", handlePlusClick, false);
+    let imageSpacer1 = C('br');
+    let downLink = C('div');
+    let downArrow = C('img');
+    downArrow.setAttribute('src', 'img/down.png');
+    downArrow.setAttribute('value', host);
+    downArrow.setAttribute('class', 'arrow down')
+    downLink.appendChild(downArrow);
+    downArrow.addEventListener("click", handleMinusClick, false);
+    let imageSpacer2 = C('br');
+
     let images = C('span')
+    let faviconC = C('div');
     let favicon = C('img');
+    faviconC.appendChild(favicon);
     let bookmarkI = C('img');
-    favicon.setAttribute('src', faviconData);
-    bookmarkI.setAttribute('src', 'img/star.png')
+    favicon.setAttribute('src', faviconData ? faviconData : "chrome://mozapps/skin/places/defaultFavicon.png");
+    favicon.setAttribute('class', 'favicon');
+    bookmarkI.setAttribute('src', 'img/star.png');
+    bookmarkI.setAttribute('class', 'bookmarkI');
     let loc = C('span')
     loc.setAttribute('class', 'location');
     loc.innerHTML = url.slice(0,100);
-    link.innerHTML = title;
+    link.innerHTML = title.length > 70 ? title.slice(0,70) + " ..." : title;
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
     el.setAttribute('class', 'result-info');
     el.appendChild(link);
+    el.appendChild(bookmarkI);
+    /*
     el.appendChild(blank1);
     el.appendChild(website);
     el.appendChild(plus);
     el.appendChild(minus);
+    */
     el.appendChild(blank2);
     el.appendChild(loc);
     images.setAttribute('class', 'icon-bookmark')
+    images.appendChild(upLink);
+//    images.appendChild(imageSpacer1);
     images.appendChild(favicon);
-    images.appendChild(blank3);
+//    images.appendChild(imageSpacer2);
+    images.appendChild(downLink);
     bookmarkI.style.visibility = isBookmarked ? 'visible' : 'hidden';
-    images.appendChild(bookmarkI);
+    //images.appendChild(bookmarkI);
     li.appendChild(images)
     li.appendChild(el);
     $('result-list').appendChild(li);
@@ -224,7 +271,7 @@ var dash = new Dashboard();
 self.on("message", function(data) {
   if (data.action == "display") {
     if (data.random == currentID) {
-      dash.populate(data.results);
+      dash.populate(data.results, data.append);
     }
   } else {
 

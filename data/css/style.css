@@ -8,12 +8,40 @@ body {
   padding: 5px 0 5px 0;
 }
 
-#result-list img {
-  padding-right: 10px;
+#result-list .favicon {
+  height: 17px;
+  width 17px;
+  vertical-align: middle;
+}
+
+#result-list .arrow {
+  margin-left: 1px;
+}
+
+#result-list .arrow:hover {
+  cursor: pointer;
+  cursor: hand;
+}
+
+#result-list .bookmarkI {
   height: 16px;
   width: 16px;
-  float: left;
-  vertical-align: middle;
+}
+
+#result-list .down {
+  margin-top: 2px;
+}
+
+#result-list .up {
+  margin-bottom: 2px;
+}
+
+#result-list img {
+  padding-right: 10px;
+}
+
+#result-list li {
+  margin: 2px 0 2px 0;
 }
 
 .result-info {
