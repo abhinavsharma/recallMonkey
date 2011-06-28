@@ -84,6 +84,7 @@ Dashboard.prototype.handleSubmit = function(e, append) {
     "params" : params,
     "append" : append ? true : false,
   });
+  $('loading-image').style.visibility = "visible";
   } catch (ex) {console.log(ex) }
 }
 
@@ -156,16 +157,18 @@ Dashboard.prototype.handleUnpinClick = function(e) {
 
 
 Dashboard.prototype.populate = function(results, append) {
+  $('loading-image').style.visibility = 'hidden';
   let me = this;
   if (!append)
     $('result-list').innerHTML = "";
-  results.forEach(function ({title, url, revHost, isBookmarked, faviconData}) {
+  results.forEach(function ({title, tags, url, revHost, isBookmarked, faviconData}) {
     if (!title || !url) {
       return;
     }
     let li = C('li');
     let el = C('div');
     let link = C('a');
+    let tagList = C('div');
     let blank1 = C('br');
     let blank2 = C('br');
     let blank3 = C('br');
@@ -237,7 +240,13 @@ Dashboard.prototype.populate = function(results, append) {
     el.appendChild(plus);
     el.appendChild(minus);
     */
-    el.appendChild(blank2);
+    el.appendChild(blank1);
+    if (tags.length > 0) {
+      tagList.innerHTML = "Tags: " + J(tags);
+      tagList.setAttribute('class', 'location');
+      el.appendChild(tagList)
+    }
+//    el.appendChild(blank2);
     el.appendChild(loc);
     images.setAttribute('class', 'icon-bookmark')
     images.appendChild(upLink);
