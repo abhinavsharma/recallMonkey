@@ -24,8 +24,9 @@ body {
 }
 
 #result-list .bookmarkI {
-  height: 16px;
-  width: 16px;
+  height: 12px;
+  width: 12px;
+  margin-left: 3px;
 }
 
 #result-list .down {

@@ -160,6 +160,9 @@ Dashboard.prototype.populate = function(results, append) {
   if (!append)
     $('result-list').innerHTML = "";
   results.forEach(function ({title, url, revHost, isBookmarked, faviconData}) {
+    if (!title || !url) {
+      return;
+    }
     let li = C('li');
     let el = C('div');
     let link = C('a');
@@ -217,7 +220,7 @@ Dashboard.prototype.populate = function(results, append) {
     let bookmarkI = C('img');
     favicon.setAttribute('src', faviconData ? faviconData : "chrome://mozapps/skin/places/defaultFavicon.png");
     favicon.setAttribute('class', 'favicon');
-    bookmarkI.setAttribute('src', 'img/star.png');
+    bookmarkI.setAttribute('src', 'img/bookmark.png');
     bookmarkI.setAttribute('class', 'bookmarkI');
     let loc = C('span')
     loc.setAttribute('class', 'location');
