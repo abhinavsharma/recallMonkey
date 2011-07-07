@@ -137,6 +137,7 @@ Dashboard.prototype.refreshPinned = function(listType) {
     link.innerHTML = 'X ' + webName;
     link.setAttribute('href', '#');
     link.setAttribute('value', listType);
+    link.setAttribute('revHost', revHost);
     link.addEventListener("click", handleUnpinClick, false);
     let el = C('li');
     el.appendChild(link);
@@ -148,9 +149,9 @@ Dashboard.prototype.refreshPinned = function(listType) {
 Dashboard.prototype.handleUnpinClick = function(e) {
   let me = this;
   e.preventDefault();
-  let webName = e.target.innerHTML;
   let listType = e.target.getAttribute('value');
-  let revHost = webName.slice(2).split('').reverse().join('') + '.';
+  let revHost = e.target.getAttribute('revHost');
+
   me.removePinned(revHost, listType);
 }
 
@@ -200,26 +201,19 @@ Dashboard.prototype.populate = function(results, append) {
     minus.setAttribute('value', host);
     minus.addEventListener("click", handleMinusClick, false);
     
-    let upLink = C('div');
-    let upArrow = C('img');
-    upArrow.setAttribute('src', (me.fluidLists["prioritized"].indexOf(revHost) < 0 ? 'img/up.png' : 'img/up2.png'));
+    let upArrow = C('label');
+    upArrow.setAttribute('class', (me.fluidLists["prioritized"].indexOf(revHost) < 0 ? 'arrow up inactive' : 'arrow up active'));
     upArrow.setAttribute('value', revHost);
-    upArrow.setAttribute('class', 'arrow up');
-    upLink.appendChild(upArrow);
     upArrow.addEventListener("click", handlePlusClick, false);
     let imageSpacer1 = C('br');
-    let downLink = C('div');
     let downArrow = C('label');
-    downArrow.setAttribute('value', host);
+    downArrow.setAttribute('value', revHost);
     downArrow.setAttribute('class', 'arrow down')
-    downLink.appendChild(downArrow);
     downArrow.addEventListener("click", handleMinusClick, false);
     let imageSpacer2 = C('br');
 
     let images = C('span')
-    let faviconC = C('div');
     let favicon = C('img');
-    faviconC.appendChild(favicon);
     let bookmarkI = C('img');
     favicon.setAttribute('src', faviconData ? faviconData : "chrome://mozapps/skin/places/defaultFavicon.png");
     favicon.setAttribute('class', 'favicon');
@@ -249,11 +243,11 @@ Dashboard.prototype.populate = function(results, append) {
 //    el.appendChild(blank2);
     el.appendChild(loc);
     images.setAttribute('class', 'icon-bookmark')
-    images.appendChild(upLink);
+    images.appendChild(upArrow);
 //    images.appendChild(imageSpacer1);
-    images.appendChild(favicon);
 //    images.appendChild(imageSpacer2);
-    images.appendChild(downLink);
+    images.appendChild(downArrow);
+    images.appendChild(favicon);
     bookmarkI.style.visibility = isBookmarked ? 'visible' : 'hidden';
     //images.appendChild(bookmarkI);
     li.appendChild(images)
@@ -273,7 +267,7 @@ Dashboard.prototype.handlePlusClick = function(e) {
 Dashboard.prototype.handleMinusClick = function(e) {
   let me = this;
   e.preventDefault();
-  let revHost = ("." + e.target.getAttribute('value')).split('').reverse().join('');
+  let revHost = e.target.getAttribute('value');
   me.addPinned(revHost, "excluded");
 }
 
