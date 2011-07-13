@@ -302,15 +302,27 @@ Dashboard.prototype.handleMinusClick = function(e) {
 
 var dash = new Dashboard();
 
+function getQueryVariable(variable) {
+  let query = window.location.search.substring(1);
+  let vars = query.split("&");
+  for (let i=0; i< vars.length; i++) {
+    let pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  } 
+  return null;
+}
+
+let defaultSearch = getQueryVariable('s');
+if (defaultSearch) {
+  $('search-field').value = defaultSearch;
+  dash.handleSubmit();
+}
 
 self.on("message", function(data) {
-  if (data.action == "display") {
-    if (data.random == currentID) {
-      dash.populate(data.results, data.append);
-    }
-  } else {
-
-  }
-  console.log("got message from chrome");
+  if (data.action == "display" && data.random == currentID) {
+    dash.populate(data.results, data.append);
+  } 
 });
 
