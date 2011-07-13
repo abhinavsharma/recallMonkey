@@ -260,7 +260,7 @@ Dashboard.prototype.populate = function(results, append) {
     loc.innerHTML = url.slice(0,100);
     link.innerHTML = title.length > 70 ? title.slice(0,70) + " ..." : title;
     link.setAttribute('href', url);
-    link.setAttribute('target', '_blank');
+    // link.setAttribute('target', '_blank');
     el.setAttribute('class', 'result-info');
     el.appendChild(link);
     el.appendChild(bookmarkI);
