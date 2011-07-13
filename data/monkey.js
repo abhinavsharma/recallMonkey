@@ -264,24 +264,17 @@ Dashboard.prototype.populate = function(results, append) {
     el.setAttribute('class', 'result-info');
     el.appendChild(link);
     el.appendChild(bookmarkI);
-    /*
-    el.appendChild(blank1);
-    el.appendChild(website);
-    el.appendChild(plus);
-    el.appendChild(minus);
-    */
+    
+
     el.appendChild(blank1);
     if (tags.length > 0) {
       tagList.innerHTML = "Tags: " + tags.join(', ');
       tagList.setAttribute('class', 'location');
       el.appendChild(tagList)
     }
-//    el.appendChild(blank2);
     el.appendChild(loc);
     images.setAttribute('class', 'icon-bookmark')
     images.appendChild(upArrow);
-//    images.appendChild(imageSpacer1);
-//    images.appendChild(imageSpacer2);
     images.appendChild(downArrow);
     images.appendChild(favicon);
     bookmarkI.style.visibility = isBookmarked ? 'visible' : 'hidden';
