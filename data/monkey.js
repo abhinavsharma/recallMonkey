@@ -116,6 +116,7 @@ Dashboard.prototype.handleSubmit = function(e, append) {
   currentID = Math.floor(Math.random() * 16000);
   self.postMessage({
     "random" : currentID,
+    "time"   : new Date().getTime(),
     "action" : "search",
     "params" : params,
     "append" : append ? true : false,
