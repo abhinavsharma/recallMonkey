@@ -113,10 +113,9 @@ Dashboard.prototype.handleSubmit = function(e, append) {
   params['timeRange'] = timeRange;
   params['query'] = $('search-field').value;
   reportError(J(params));
-  currentID = Math.floor(Math.random() * 16000);
+  currentID = new Date().getTime();
   self.postMessage({
-    "random" : currentID,
-    "time"   : new Date().getTime(),
+    "time"   : currentID,
     "action" : "search",
     "params" : params,
     "append" : append ? true : false,
@@ -322,7 +321,7 @@ if (defaultSearch) {
 }
 
 self.on("message", function(data) {
-  if (data.action == "display" && data.random == currentID) {
+  if (data.action == "display" && data.time == currentID) {
     dash.populate(data.results, data.append);
   } 
 });
