@@ -18,7 +18,7 @@
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
- *   Abhinav Sharma <me@abhinavsharma.me>
+ *   Abhinav Sharma <me@abhinavsharma.me> / abhinav on irc.mozilla.org
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -113,7 +113,7 @@ Dashboard.prototype.handleSubmit = function(e, append) {
   params['timeRange'] = timeRange;
   params['query'] = $('search-field').value;
   reportError(J(params));
-  currentID = new Date().getTime();
+  currentID = Date.now();
   self.postMessage({
     "time"   : currentID,
     "action" : "search",
