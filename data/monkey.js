@@ -50,6 +50,8 @@ function Dashboard() {
   }
   me.skipped = 0;
 
+  me.pendingSearches = [];
+
   function handleSubmit (e) {
     reportError("handling submission 1/2");
     me.skipped = 0;
@@ -67,6 +69,17 @@ function Dashboard() {
       me.incrementScroll();
     }
   }
+  
+  /* check once a second if there is a search request to be sent,
+   * even though we have query cancellation, its a good idea to
+   * reduce the number of queries being made as early as possible
+   * since postSearch only sends the last search request in the
+   * previous second.
+   */
+  function periodicSearch() {
+    me.postSearch();
+  }
+  me.periodicId = window.setInterval(periodicSearch, 1000);
 
   $('search-form').addEventListener("submit", handleSubmit, false);
   $('search-form').addEventListener("keyup", handleSubmit, false);
@@ -114,7 +127,7 @@ Dashboard.prototype.handleSubmit = function(e, append) {
   params['query'] = $('search-field').value;
   reportError(J(params));
   currentID = Date.now();
-  self.postMessage({
+  me.submitSearch({
     "time"   : currentID,
     "action" : "search",
     "params" : params,
@@ -122,6 +135,21 @@ Dashboard.prototype.handleSubmit = function(e, append) {
   });
   $('loading-image').style.visibility = "visible";
   } catch (ex) {console.log(ex) }
+}
+
+Dashboard.prototype.submitSearch = function(searchObj) {
+  let me = this;
+  me.pendingSearches.push(searchObj);
+}
+
+Dashboard.prototype.postSearch = function() {
+  let me = this;
+  let l = me.pendingSearches.length;
+  if (l == 0)
+    return;
+  let sObj = me.pendingSearches[l-1];
+  me.pendingSearches = [];
+  self.postMessage(sObj);
 }
 
 Dashboard.prototype.addPinned = function(revHost, listType) {
